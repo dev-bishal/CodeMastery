@@ -1,0 +1,32 @@
+---
+import "../styles/global.css";
+import Head from "../components/Head.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+    pageTitle ?: string,
+    description : string,
+    seoImagePath : string,
+    pageType ?: string
+}
+
+const {pageTitle = "CodeMaster - Learn to Code", pageType = "website", description, seoImagePath} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<Head 
+    {pageTitle}
+    {description}
+    {seoImagePath}
+    {pageType}
+    /> 
+<body class="theme-transition bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+    <Navbar />    
+    <slot /> 
+    <Footer />
+    
+    <script is:inline src="/CodeMastery/assets/main.js"></script>
+</body>
+</html>

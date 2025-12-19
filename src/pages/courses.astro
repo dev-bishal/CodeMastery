@@ -1,0 +1,36 @@
+---
+import CourseCard from "../components/CourseCard.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+
+import { courses } from "../data/courses";
+
+---
+
+<MainLayout
+    pageTitle = "All Courses"
+    description = "Find the all courses. Choose the one that suits you best"
+    seoImagePath = ""
+    pageType = "website"
+>
+    <section class="pt-24 pb-16 px-6 relative overflow-hidden py-16 bg-gray-100/50 dark:bg-gray-800/50">
+        <div class="container mx-auto">
+            
+            <div class="text-center mb-12 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">All <span class="gradient-text">Courses</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Comprehensive interview preparation with coding challenges, mock interviews, and company-specific questions</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+                    {
+                    courses.map((course) => (
+                    <CourseCard courseTitle={course.courseTitle} cardText={course.cardText} imageFileName={course.imageFileName}
+                        isPaid={course.isPaid} level={course.level} slug={course.slug} color={course.color} />
+                    ))
+                    }
+            
+            </div>
+
+        </div>
+    </section>
+</MainLayout>

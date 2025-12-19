@@ -16,6 +16,7 @@ pnpm-debug.log*
 # other files and folders
 .vscode/
 demo files/
+removedContent.html
 
 # environment variables
 .env

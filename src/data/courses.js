@@ -1,0 +1,200 @@
+export const courses = [
+  {
+    "courseTitle": "Angular",
+    "cardText": "Build powerful web applications with Google's framework",
+    "descriptionText": "Angular is a platform and framework for building single-page client applications using HTML and TypeScript. Learn to build dynamic, enterprise-grade applications with dependency injection, declarative templates, and end-to-end tooling.",
+    "imageFileName": "angular",
+    "isPaid": true,
+    "isPopular": true,
+    "level": "Intermediate",
+    "slug": "angular-course",
+    "color": "#DD0031"
+  },
+  {
+    "courseTitle": "Astro",
+    "cardText": "Build faster websites with less client-side JavaScript",
+    "descriptionText": "Astro is a modern static site builder that delivers lightning-fast performance. Learn to build content-focused websites using your favorite UI frameworks while shipping zero JavaScript by default for optimal performance.",
+    "imageFileName": "astro",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "astro-course",
+    "color": "#FF5D01"
+  },
+  {
+    "courseTitle": "Avalonia",
+    "cardText": "Cross-platform desktop applications with .NET",
+    "descriptionText": "Avalonia is a cross-platform XAML-based UI framework providing a flexible styling system and supporting a wide variety of platforms. Create beautiful desktop applications that run on Windows, macOS, Linux, iOS, Android, and WebAssembly.",
+    "imageFileName": "avalonia",
+    "isPaid": true,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "avalonia-course",
+    "color": "#68217A"
+  },
+  {
+    "courseTitle": "Azure",
+    "cardText": "Microsoft's cloud computing platform and services",
+    "descriptionText": "Microsoft Azure is a comprehensive cloud platform offering over 200 products and cloud services. Learn to build, run, and manage applications across multiple clouds, on-premises, and at the edge with your preferred tools and frameworks.",
+    "imageFileName": "azure",
+    "isPaid": true,
+    "isPopular": false,
+    "level": "Advanced",
+    "slug": "azure-course",
+    "color": "#0078D4"
+  },
+  {
+    "courseTitle": "C-Sharp",
+    "cardText": "Modern object-oriented programming language",
+    "descriptionText": "C# is a modern, object-oriented programming language developed by Microsoft. Learn this versatile language used for desktop applications, web development, mobile apps, games, and enterprise software with strong typing and rich libraries.",
+    "imageFileName": "c-sharp",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "csharp-course",
+    "color": "#239120"
+  },
+  {
+    "courseTitle": "DotNet MVC",
+    "cardText": "Pattern-based way to build dynamic websites",
+    "descriptionText": "ASP.NET MVC is a web application framework that implements the model-view-controller pattern. Learn to build scalable, standards-based web applications using this powerful framework with separation of concerns and testability built-in.",
+    "imageFileName": "dotnet-mvc",
+    "isPaid": true,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "dotnet-mvc-course",
+    "color": "#512BD4"
+  },
+  {
+    "courseTitle": "DotNet Web API",
+    "cardText": "Build RESTful services with ASP.NET Core",
+    "descriptionText": "ASP.NET Web API is a framework for building HTTP services that reach a broad range of clients. Learn to create RESTful services that can be consumed by browsers, mobile devices, and desktop applications with robust routing and serialization.",
+    "imageFileName": "dotnet-webapi",
+    "isPaid": true,
+    "isPopular": true,
+    "level": "Intermediate",
+    "slug": "dotnet-webapi-course",
+    "color": "#512BD4"
+  },
+  {
+    "courseTitle": "Electron JS",
+    "cardText": "Build cross-platform desktop apps with web technologies",
+    "descriptionText": "Electron is a framework for creating native applications with web technologies like JavaScript, HTML, and CSS. Learn to build desktop applications that work on Windows, macOS, and Linux using familiar web development tools and practices.",
+    "imageFileName": "electron",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "electronjs-course",
+    "color": "#47848F"
+  },
+  {
+    "courseTitle": "Express JS",
+    "cardText": "Minimal and flexible Node.js web framework",
+    "descriptionText": "Express.js is a fast, unopinionated, minimalist web framework for Node.js. Learn to build robust APIs and web applications with a myriad of HTTP utility methods and middleware, making it perfect for single-page, multi-page, and hybrid applications.",
+    "imageFileName": "express",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "expressjs-course",
+    "color": "#000000"
+  },
+  {
+    "courseTitle": "JavaScript",
+    "cardText": "The language of the web",
+    "descriptionText": "JavaScript is a versatile programming language that enables interactive web pages. Learn the fundamentals of this essential web technology, from basic syntax to advanced concepts like closures, prototypes, and asynchronous programming.",
+    "imageFileName": "js",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "javascript-course",
+    "color": "#F7DF1E"
+  },
+  {
+    "courseTitle": "Mongo DB",
+    "cardText": "NoSQL document database for modern applications",
+    "descriptionText": "MongoDB is a source-available cross-platform document-oriented database program. Learn to work with JSON-like documents, perform complex queries, implement aggregation pipelines, and build scalable applications with this flexible NoSQL database.",
+    "imageFileName": "mongo",
+    "isPaid": true,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "mongodb-course",
+    "color": "#47A248"
+  },
+  {
+    "courseTitle": "Next JS",
+    "cardText": "React framework for production-grade applications",
+    "descriptionText": "Next.js is a React framework that enables functionality like server-side rendering and static website generation. Learn to build fast, SEO-friendly React applications with file-based routing, API routes, and optimized performance out of the box.",
+    "imageFileName": "next-js",
+    "isPaid": true,
+    "isPopular": true,
+    "level": "Intermediate",
+    "slug": "nextjs-course",
+    "color": "#000000"
+  },
+  {
+    "courseTitle": "Node JS",
+    "cardText": "JavaScript runtime built on Chrome's V8 engine",
+    "descriptionText": "Node.js is an asynchronous event-driven JavaScript runtime designed to build scalable network applications. Learn to create server-side applications using JavaScript, work with npm packages, handle I/O operations, and build REST APIs.",
+    "imageFileName": "node",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "nodejs-course",
+    "color": "#339933"
+  },
+  {
+    "courseTitle": "PostMan",
+    "cardText": "API platform for building and using APIs",
+    "descriptionText": "Postman is a collaboration platform for API development. Learn to design, test, document, and monitor APIs using this powerful tool. Master API testing, automation, and collaboration to streamline your API development workflow.",
+    "imageFileName": "postman",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "postman-course",
+    "color": "#FF6C37"
+  },
+  {
+    "courseTitle": "Python",
+    "cardText": "Versatile programming language for everyone",
+    "descriptionText": "Python is a high-level, interpreted programming language known for its readability and versatility. Learn this popular language used in web development, data science, machine learning, automation, and more with its extensive standard library.",
+    "imageFileName": "python",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "python-course",
+    "color": "#3776AB"
+  },
+  {
+    "courseTitle": "React",
+    "cardText": "JavaScript library for building user interfaces",
+    "descriptionText": "React is a declarative, efficient, and flexible JavaScript library for building user interfaces. Learn to create interactive UIs with component-based architecture, manage state effectively, and build single-page applications that scale.",
+    "imageFileName": "react",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "react-course",
+    "color": "#61DAFB"
+  },
+  {
+    "courseTitle": "SQL",
+    "cardText": "Structured Query Language for database management",
+    "descriptionText": "SQL is a domain-specific language used for managing and manipulating relational databases. Learn to create databases, write complex queries, optimize performance, and ensure data integrity with this essential skill for developers.",
+    "imageFileName": "sql",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Beginner",
+    "slug": "sql-course",
+    "color": "#00758F"
+  },
+  {
+    "courseTitle": "Supabase",
+    "cardText": "Open source Firebase alternative",
+    "descriptionText": "Supabase is an open source Firebase alternative providing a PostgreSQL database, authentication, instant APIs, realtime subscriptions, and storage. Learn to build full-stack applications with this modern backend-as-a-service platform.",
+    "imageFileName": "supabase",
+    "isPaid": false,
+    "isPopular": false,
+    "level": "Intermediate",
+    "slug": "supabase-course",
+    "color": "#3ECF8E"
+  }
+]
