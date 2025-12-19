@@ -13,6 +13,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# other files and folders
+.vscode/
+demo files/
+
 # environment variables
 .env
 .env.production
