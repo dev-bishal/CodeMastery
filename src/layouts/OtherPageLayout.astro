@@ -1,0 +1,28 @@
+---
+import "../styles/global.css";
+import Head from "../components/Head.astro";
+
+interface Props {
+    pageTitle ?: string,
+    description : string,
+    seoImagePath : string,
+    pageType ?: string,
+
+    bodyClass ?:string
+}
+
+const {pageTitle = "CodeMaster - Learn to Code", pageType = "website", description, seoImagePath, bodyClass} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<Head 
+    {pageTitle}
+    {description}
+    {seoImagePath}
+    {pageType}
+    /> 
+<body class:list={[bodyClass]}>
+    <slot /> 
+</body>
+</html>

@@ -7,8 +7,9 @@ export const courses = [
     "isPaid": true,
     "isPopular": true,
     "level": "Intermediate",
-    "slug": "angular-course",
-    "color": "#DD0031"
+    "slug": "angular",
+    "color": "#DD0031",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Astro",
@@ -18,8 +19,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "astro-course",
-    "color": "#FF5D01"
+    "slug": "astro",
+    "color": "#FF5D01",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Avalonia",
@@ -29,8 +31,9 @@ export const courses = [
     "isPaid": true,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "avalonia-course",
-    "color": "#68217A"
+    "slug": "avalonia",
+    "color": "#68217A",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Azure",
@@ -40,19 +43,21 @@ export const courses = [
     "isPaid": true,
     "isPopular": false,
     "level": "Advanced",
-    "slug": "azure-course",
-    "color": "#0078D4"
+    "slug": "azure",
+    "color": "#0078D4",
+    "isAvailable" : false
   },
   {
-    "courseTitle": "C-Sharp",
+    "courseTitle": "C Sharp",
     "cardText": "Modern object-oriented programming language",
     "descriptionText": "C# is a modern, object-oriented programming language developed by Microsoft. Learn this versatile language used for desktop applications, web development, mobile apps, games, and enterprise software with strong typing and rich libraries.",
     "imageFileName": "c-sharp",
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "csharp-course",
-    "color": "#239120"
+    "slug": "c-sharp",
+    "color": "#239120",
+    "isAvailable" : false
   },
   {
     "courseTitle": "DotNet MVC",
@@ -62,8 +67,9 @@ export const courses = [
     "isPaid": true,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "dotnet-mvc-course",
-    "color": "#512BD4"
+    "slug": "dotnet-mvc",
+    "color": "#512BD4",
+    "isAvailable" : false
   },
   {
     "courseTitle": "DotNet Web API",
@@ -73,8 +79,9 @@ export const courses = [
     "isPaid": true,
     "isPopular": true,
     "level": "Intermediate",
-    "slug": "dotnet-webapi-course",
-    "color": "#512BD4"
+    "slug": "dotnet-webapi",
+    "color": "#512BD4",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Electron JS",
@@ -84,8 +91,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "electronjs-course",
-    "color": "#47848F"
+    "slug": "electronjs",
+    "color": "#47848F",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Express JS",
@@ -95,8 +103,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "expressjs-course",
-    "color": "#000000"
+    "slug": "expressjs",
+    "color": "#000000",
+    "isAvailable" : false
   },
   {
     "courseTitle": "JavaScript",
@@ -106,8 +115,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "javascript-course",
-    "color": "#F7DF1E"
+    "slug": "javascript",
+    "color": "#F7DF1E",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Mongo DB",
@@ -117,8 +127,9 @@ export const courses = [
     "isPaid": true,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "mongodb-course",
-    "color": "#47A248"
+    "slug": "mongodb",
+    "color": "#47A248",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Next JS",
@@ -128,8 +139,9 @@ export const courses = [
     "isPaid": true,
     "isPopular": true,
     "level": "Intermediate",
-    "slug": "nextjs-course",
-    "color": "#000000"
+    "slug": "nextjs",
+    "color": "#000000",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Node JS",
@@ -139,8 +151,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "nodejs-course",
-    "color": "#339933"
+    "slug": "nodejs",
+    "color": "#339933",
+    "isAvailable" : false
   },
   {
     "courseTitle": "PostMan",
@@ -150,8 +163,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "postman-course",
-    "color": "#FF6C37"
+    "slug": "postman",
+    "color": "#FF6C37",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Python",
@@ -161,8 +175,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "python-course",
-    "color": "#3776AB"
+    "slug": "python",
+    "color": "#3776AB",
+    "isAvailable" : false
   },
   {
     "courseTitle": "React",
@@ -172,8 +187,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "react-course",
-    "color": "#61DAFB"
+    "slug": "react",
+    "color": "#61DAFB",
+    "isAvailable" : false
   },
   {
     "courseTitle": "SQL",
@@ -183,8 +199,9 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Beginner",
-    "slug": "sql-course",
-    "color": "#00758F"
+    "slug": "sql",
+    "color": "#00758F",
+    "isAvailable" : false
   },
   {
     "courseTitle": "Supabase",
@@ -194,7 +211,8 @@ export const courses = [
     "isPaid": false,
     "isPopular": false,
     "level": "Intermediate",
-    "slug": "supabase-course",
-    "color": "#3ECF8E"
+    "slug": "supabase",
+    "color": "#3ECF8E",
+    "isAvailable" : false
   }
 ]
