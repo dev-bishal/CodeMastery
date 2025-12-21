@@ -41,7 +41,6 @@ filteredObjects.map((article)=>{
     listOfAllSimilarArticles.push(article.filePath);
 })
 
-console.log(listOfAllSimilarArticles);
 let adjacentArticles = getAdjacentElements(listOfAllSimilarArticles, article.filePath)
 
 function getArticleByFileName(Filename : string){
@@ -184,7 +183,7 @@ pageType='article'
                 <!-- Next/Previous Navigation -->
                 <div
                     class="flex flex-wrap lg:gap-0 gap-3 justify-between items-center mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 animate-on-scroll delay-200">
-                    <a href={getArticleByFileName(adjacentArticles.previous)?.data.slug}
+                    <a href={`/CodeMastery/learning/${course}/${getArticleByFileName(adjacentArticles.previous)?.data.slug}`}
                         class="flex lg:w-fit w-full items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                         class:list={[adjacentArticles.previous == null && "invisible"]}>
                         <i class="fas fa-arrow-left mr-3"></i>
@@ -194,7 +193,7 @@ pageType='article'
                         </div>
                     </a>
 
-                    <a href={getArticleByFileName(adjacentArticles.next)?.data.slug}
+                    <a href={`/CodeMastery/learning/${course}/${getArticleByFileName(adjacentArticles.next)?.data.slug}`}
                         class="flex lg:w-fit w-full justify-end items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-right"
                         class:list={[adjacentArticles.next == null && "invisible"]}>
                         <div>
