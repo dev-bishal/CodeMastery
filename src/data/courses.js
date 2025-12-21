@@ -4,12 +4,12 @@ export const courses = [
     "cardText": "Build powerful web applications with Google's framework",
     "descriptionText": "Angular is a platform and framework for building single-page client applications using HTML and TypeScript. Learn to build dynamic, enterprise-grade applications with dependency injection, declarative templates, and end-to-end tooling.",
     "imageFileName": "angular",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": true,
-    "level": "Intermediate",
+    "level": "Frontend",
     "slug": "angular",
     "color": "#DD0031",
-    "isAvailable" : false
+    "isAvailable" : true
   },
   {
     "courseTitle": "Astro",
@@ -28,7 +28,7 @@ export const courses = [
     "cardText": "Cross-platform desktop applications with .NET",
     "descriptionText": "Avalonia is a cross-platform XAML-based UI framework providing a flexible styling system and supporting a wide variety of platforms. Create beautiful desktop applications that run on Windows, macOS, Linux, iOS, Android, and WebAssembly.",
     "imageFileName": "avalonia",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": false,
     "level": "Intermediate",
     "slug": "avalonia",
@@ -40,7 +40,7 @@ export const courses = [
     "cardText": "Microsoft's cloud computing platform and services",
     "descriptionText": "Microsoft Azure is a comprehensive cloud platform offering over 200 products and cloud services. Learn to build, run, and manage applications across multiple clouds, on-premises, and at the edge with your preferred tools and frameworks.",
     "imageFileName": "azure",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": false,
     "level": "Advanced",
     "slug": "azure",
@@ -54,34 +54,34 @@ export const courses = [
     "imageFileName": "c-sharp",
     "isPaid": false,
     "isPopular": false,
-    "level": "Beginner",
+    "level": "Backend",
     "slug": "c-sharp",
     "color": "#239120",
-    "isAvailable" : false
+    "isAvailable" : true
   },
   {
     "courseTitle": "DotNet MVC",
     "cardText": "Pattern-based way to build dynamic websites",
     "descriptionText": "ASP.NET MVC is a web application framework that implements the model-view-controller pattern. Learn to build scalable, standards-based web applications using this powerful framework with separation of concerns and testability built-in.",
     "imageFileName": "dotnet-mvc",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": false,
-    "level": "Intermediate",
+    "level": "Frontend & Backend",
     "slug": "dotnet-mvc",
     "color": "#512BD4",
-    "isAvailable" : false
+    "isAvailable" : true
   },
   {
     "courseTitle": "DotNet Web API",
     "cardText": "Build RESTful services with ASP.NET Core",
     "descriptionText": "ASP.NET Web API is a framework for building HTTP services that reach a broad range of clients. Learn to create RESTful services that can be consumed by browsers, mobile devices, and desktop applications with robust routing and serialization.",
     "imageFileName": "dotnet-webapi",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": true,
-    "level": "Intermediate",
+    "level": "API Development",
     "slug": "dotnet-webapi",
     "color": "#512BD4",
-    "isAvailable" : false
+    "isAvailable" : true
   },
   {
     "courseTitle": "Electron JS",
@@ -114,17 +114,17 @@ export const courses = [
     "imageFileName": "js",
     "isPaid": false,
     "isPopular": false,
-    "level": "Beginner",
+    "level": "Frontend",
     "slug": "javascript",
     "color": "#F7DF1E",
-    "isAvailable" : false
+    "isAvailable" : true
   },
   {
     "courseTitle": "Mongo DB",
     "cardText": "NoSQL document database for modern applications",
     "descriptionText": "MongoDB is a source-available cross-platform document-oriented database program. Learn to work with JSON-like documents, perform complex queries, implement aggregation pipelines, and build scalable applications with this flexible NoSQL database.",
     "imageFileName": "mongo",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": false,
     "level": "Intermediate",
     "slug": "mongodb",
@@ -136,7 +136,7 @@ export const courses = [
     "cardText": "React framework for production-grade applications",
     "descriptionText": "Next.js is a React framework that enables functionality like server-side rendering and static website generation. Learn to build fast, SEO-friendly React applications with file-based routing, API routes, and optimized performance out of the box.",
     "imageFileName": "next-js",
-    "isPaid": true,
+    "isPaid": false,
     "isPopular": true,
     "level": "Intermediate",
     "slug": "nextjs",
@@ -186,10 +186,10 @@ export const courses = [
     "imageFileName": "react",
     "isPaid": false,
     "isPopular": false,
-    "level": "Beginner",
+    "level": "Frontend",
     "slug": "react",
     "color": "#61DAFB",
-    "isAvailable" : false
+    "isAvailable" : true
   },
   {
     "courseTitle": "SQL",

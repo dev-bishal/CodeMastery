@@ -31,25 +31,32 @@ article.data.author.map((articleAuthors)=>{
     authorData.push(authors.find(obj => obj.authorId === articleAuthors));
 })
 
-let listOfAllArticles : any[] = [];
-_allCodeArticles.map((article)=>{
-    listOfAllArticles.push(article.filePath);
+const filteredObjects = _allCodeArticles.filter(obj => 
+obj.filePath?.includes(courseData?.slug || "")
+);
+
+let listOfAllSimilarArticles : any[] = [];
+filteredObjects.sort((a: CollectionEntry<"codeArticles">, b: CollectionEntry<"codeArticles">) => new Date(a.data.updateDate).valueOf() - new Date(b.data.updateDate).valueOf());
+filteredObjects.map((article)=>{
+    listOfAllSimilarArticles.push(article.filePath);
 })
 
-let adjacentArticles = getAdjacentElements(listOfAllArticles, article.filePath);
+console.log(listOfAllSimilarArticles);
+let adjacentArticles = getAdjacentElements(listOfAllSimilarArticles, article.filePath)
 
-console.log("Searching for", article.filePath);
+function getArticleByFileName(Filename : string){
+    return filteredObjects.find(article => article.filePath === Filename)
+}
 
-console.log(adjacentArticles);
 ---
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
 
 <MainLayout 
-    pageTitle={`${article.data.title}`} 
-    description={article.data.metadescription}
-    seoImagePath={article.data.featuredImage || ""}
-    pageType='article'
+pageTitle={`${article.data.title}`} 
+description={article.data.metadescription}
+seoImagePath={article.data.featuredImage || ""}
+pageType='article'
 >
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
 
     <!-- Main Content -->
     <main class="container mx-auto pt-24 px-6 py-8">
@@ -86,7 +93,7 @@ console.log(adjacentArticles);
             <p class="text-xl text-gray-600 dark:text-gray-300 mb-6">{article.data.metadescription}</p>
     
             <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center flex-wrap gap-4 space-x-4">
                     {
                         authorData.map((author)=>(
                             <AuthorChip 
@@ -129,8 +136,8 @@ console.log(adjacentArticles);
             <!-- Main Content Area -->
             <div class="flex-1">
                 <!-- Split Layout Container -->
-                <div id="split-container" class="split-container flex flex-col lg:flex-row min-h-[calc(100vh-3.5rem)]">
-                    <section class="w-full lg:w-1/2 p-8 lg:p-12 overflow-y-auto">
+                <div id="split-container" class="split-container flex flex-col lg:flex-row lg:gap-0 gap-4 lg:max-h-[calc(100vh-5rem)]">
+                    <section class="w-full lg:w-1/2 lg:p-12 overflow-y-auto">
                         <div class="max-w-2xl mx-auto">
                             <span class="text-blue-600 font-semibold text-sm uppercase tracking-widest">
                                 {article.data.level == 1 && "Beginner"}
@@ -139,9 +146,8 @@ console.log(adjacentArticles);
                                 Topic</span>
                             
                             <div class="content prose dark:prose-invert prose-slate max-w-none space-y-6">
-                                <!-- Content will be here -->
-                                 <Prose set:html={article.rendered?.html.split(`<code id="code-content"`)[0]}>
-                                    
+                                <Prose set:html={article.rendered?.html.split(`<code id="code-content"`)[0]}>
+                                    <!-- Content will be here -->
                                  </Prose>
                             </div>
 
@@ -165,30 +171,35 @@ console.log(adjacentArticles);
                         </div>
 
                         <div class="h-full overflow-y-auto pb-20">
+                        {
+                            article.rendered?.html.split(`<code id="code-content"`)[`1`]?.length &&
                             <pre class="rounded-xl !bg-transparent !m-0" set:html={`<code id="code-content"` + article.rendered?.html.split(`<code id="code-content"`)[`1`]}>
-                                
+                                <!-- Preview Code will be  -->
                             </pre>
+                        }
                         </div>
                     </section>
                 </div>
 
                 <!-- Next/Previous Navigation -->
                 <div
-                    class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 animate-on-scroll delay-200">
-                    <a href="#"
-                        class="flex items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    class="flex flex-wrap lg:gap-0 gap-3 justify-between items-center mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 animate-on-scroll delay-200">
+                    <a href={getArticleByFileName(adjacentArticles.previous)?.data.slug}
+                        class="flex lg:w-fit w-full items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                        class:list={[adjacentArticles.previous == null && "invisible"]}>
                         <i class="fas fa-arrow-left mr-3"></i>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Previous</p>
-                            <p class="font-medium">Functions & Scope</p>
+                            <p class="font-medium">{getArticleByFileName(adjacentArticles.previous)?.data.title}</p>
                         </div>
                     </a>
 
-                    <a href="#"
-                        class="flex items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-right">
+                    <a href={getArticleByFileName(adjacentArticles.next)?.data.slug}
+                        class="flex lg:w-fit w-full justify-end items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-right"
+                        class:list={[adjacentArticles.next == null && "invisible"]}>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Next</p>
-                            <p class="font-medium">Prototypes & Inheritance</p>
+                            <p class="font-medium">{getArticleByFileName(adjacentArticles.next)?.data.title}</p>
                         </div>
                         <i class="fas fa-arrow-right ml-3"></i>
                     </a>

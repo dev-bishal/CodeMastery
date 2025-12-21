@@ -23,7 +23,7 @@ import { courses } from "../data/courses";
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
                     {
-                    courses.map((course) => (
+                    courses.filter((course => course.isAvailable === true)).map((course) => (
                     <CourseCard courseTitle={course.courseTitle} cardText={course.cardText} imageFileName={course.imageFileName}
                         isPaid={course.isPaid} level={course.level} slug={course.slug} color={course.color} />
                     ))

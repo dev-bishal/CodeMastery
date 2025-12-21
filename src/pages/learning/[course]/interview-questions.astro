@@ -1,0 +1,1436 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import { courses } from '../../../data/courses';
+
+export function getStaticPaths() {
+    let path :any[] = [];
+    
+    return courses.map((course) => {
+        return {
+            params: {
+                course: course.slug, // e.g., "javascript"
+            },
+            props: { courseData : course }, // Pass the full article data as a prop
+        };
+    });
+}
+
+const { course } = Astro.params;
+const { courseData } = Astro.props;
+---
+<style is:inline>
+    :root {
+        --gradient-fresher: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        --gradient-mid: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-senior: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+    }
+
+    .gradient-text {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .gradient-bg {
+        background: var(--gradient-primary);
+    }
+    
+    .gradient-fresher {
+        color: #ffffff;
+        background: var(--gradient-fresher);
+    }
+    
+    .gradient-mid {
+        background: var(--gradient-mid);
+    }
+    
+    .gradient-senior {
+        background: var(--gradient-senior);
+    }
+    
+    .badge-fresher {
+        background: var(--gradient-fresher);
+    }
+    
+    .badge-mid {
+        background: var(--gradient-mid);
+    }
+    
+    .badge-senior {
+        background: var(--gradient-senior);
+    }
+    
+    /* Accordion Styles */
+    .accordion-item {
+        border-radius: 0.75rem;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .accordion-item:hover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .accordion-header {
+        padding: 1.25rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease, padding 0.3s ease;
+        padding: 0 1.5rem;
+    }
+    
+    .accordion-content.open {
+        max-height: 2000px;
+        padding: 1.5rem;
+    }
+    
+    .accordion-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .accordion-icon.open {
+        transform: rotate(180deg);
+    }
+    
+    /* Code block styles */
+    .code-block {
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        margin: 1rem 0;
+        position: relative;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid;
+    }
+    
+    .copy-btn {
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .copy-btn.copied {
+        background-color: #10b981;
+        color: white;
+    }
+    
+    /* Difficulty indicator */
+    .difficulty-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 6px;
+    }
+    
+    .difficulty-easy { background-color: #10b981; }
+    .difficulty-medium { background-color: #f59e0b; }
+    .difficulty-hard { background-color: #ef4444; }
+    
+    /* Tab styles */
+    .tab {
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .tab.active {
+        border: 2px dashed purple;
+    }
+    
+    /* Animation delays */
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+    
+    .sticky-nav {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(10px);
+        z-index: 40;
+    }
+    
+    /* Floating action button */
+    .fab-icon {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 30;
+    }
+    
+    .fab-icon:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Filter tags */
+    .filter-tag {
+        padding: 0.375rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid;
+    }
+    
+    .filter-tag.active {
+        color: white;
+        border-color: transparent;
+    }
+</style>
+
+<MainLayout 
+pageTitle={`Interview Questions for ${courseData.courseTitle}`}
+description="Find the collection of best Interview Questions"
+seoImagePath=""
+pageType='website'>
+    <!-- Page Header -->
+    <header class="pt-24 py-12 px-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-300 dark:bg-purple-900 rounded-full -translate-y-32 translate-x-32 opacity-30 blur-3xl"></div>
+        <div class="container mx-auto relative z-10">
+            <div class="text-center max-w-3xl mx-auto animate-on-scroll">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">{courseData.courseTitle} Interview Questions</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">Curated questions categorized by experience level. Practice with detailed explanations and code examples.</p>
+                
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <div class="flex items-center">
+                        <span class="difficulty-dot difficulty-easy"></span>
+                        <span class="text-sm">Easy</span>
+                        <span class="mx-2">•</span>
+                        <span class="difficulty-dot difficulty-medium"></span>
+                        <span class="text-sm">Medium</span>
+                        <span class="mx-2">•</span>
+                        <span class="difficulty-dot difficulty-hard"></span>
+                        <span class="text-sm">Hard</span>
+                    </div>
+                </div>
+                
+                <!-- Experience Level Tabs -->
+                <div class="flex flex-wrap justify-center gap-4 mb-6">
+                    <div id="tab-fresher" class="tab bg-green-200 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50 gradient-fresher active" data-tab="fresher">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        Fresher (0-2 years)
+                    </div>
+                    <div id="tab-mid" class="tab bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50" data-tab="mid">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Mid-Senior (3-5 years)
+                    </div>
+                    <div id="tab-senior" class="tab bg-gray-800 dark:bg-gray-700 text-gray-300 hover:bg-gray-900 dark:hover:bg-gray-600" data-tab="senior">
+                        <i class="fas fa-crown mr-2"></i>
+                        Senior (5+ years)
+                    </div>
+                </div>
+                
+                <!-- Filter Tags -->
+                <div class="flex flex-wrap justify-center gap-2 mb-2">
+                    <div class="text-sm text-gray-500 dark:text-gray-400 mr-2">Filter by topic:</div>
+                    <div id="filter-tags" class="flex flex-wrap justify-center gap-2">
+                        <!-- Filter tags will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="py-8 px-6">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg animate-on-scroll delay-100">
+                    <div class="text-3xl font-bold gradient-text mb-2" id="total-questions">0</div>
+                    <div class="text-gray-600 dark:text-gray-300">Total Questions</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg animate-on-scroll delay-200">
+                    <div class="text-3xl font-bold text-green-600 dark:text-green-400 mb-2" id="fresher-count">0</div>
+                    <div class="text-gray-600 dark:text-gray-300">Fresher Level</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg animate-on-scroll delay-300">
+                    <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2" id="mid-count">0</div>
+                    <div class="text-gray-600 dark:text-gray-300">Mid-Senior Level</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg animate-on-scroll delay-400">
+                    <div class="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-2" id="senior-count">0</div>
+                    <div class="text-gray-600 dark:text-gray-300">Senior Level</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Fresher Level Questions -->
+        <section id="fresher" class="mb-16 animate-on-scroll">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 gradient-fresher rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold">Fresher Level Questions</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Basic to intermediate questions for entry-level JavaScript roles (0-2 years experience)</p>
+                </div>
+            </div>
+            
+            <div id="fresher-questions" class="space-y-4">
+                <!-- Questions will be loaded by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Mid-Senior Level Questions -->
+        <section id="mid-senior" class="mb-16 animate-on-scroll delay-100">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 gradient-mid rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-line text-white text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold">Mid-Senior Level Questions</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Advanced concepts and problem-solving for mid-level roles (3-5 years experience)</p>
+                </div>
+            </div>
+            
+            <div id="mid-questions" class="space-y-4">
+                <!-- Questions will be loaded by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Senior Level Questions -->
+        <section id="senior" class="animate-on-scroll delay-200">
+            <div class="flex items-center mb-8">
+                <div class="w-12 h-12 gradient-senior rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-crown text-white text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold">Senior Level Questions</h2>
+                    <p class="text-gray-600 dark:text-gray-300">System design, architecture, and leadership questions for senior roles (5+ years experience)</p>
+                </div>
+            </div>
+            
+            <div id="senior-questions" class="space-y-4">
+                <!-- Questions will be loaded by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Practice CTA -->
+    <section class="py-16 px-6 gradient-bg relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -translate-y-32 translate-x-32"></div>
+        
+        <div class="container mx-auto relative z-10 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 animate-on-scroll">Ready to Practice?</h2>
+            <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto animate-on-scroll delay-100">Take mock interviews with detailed feedback and performance analytics</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-on-scroll delay-200">
+                <a href="#" class="px-8 py-3 bg-white text-purple-600 font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg">
+                    Start Mock Interview
+                </a>
+                <a href="#" class="px-8 py-3 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+                    Download All Questions
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <div id="fab" class="fab-icon gradient-bg text-white grid place-items-center">
+        <i class="fas fa-random"></i>
+    </div>
+</MainLayout>
+
+<script is:inline>
+    // Interview Questions Data
+    const interviewQuestions = {
+        fresher: [
+            {
+                id: 1,
+                question: "What is the difference between let, const, and var in JavaScript?",
+                answer: "The main differences are in scoping, hoisting, and reassignment:<br><br>1. <strong>var</strong>: Function-scoped, can be redeclared, hoisted with initialization as 'undefined'<br>2. <strong>let</strong>: Block-scoped, cannot be redeclared in same scope, hoisted but not initialized (Temporal Dead Zone)<br>3. <strong>const</strong>: Block-scoped, cannot be redeclared or reassigned, must be initialized during declaration",
+                code: `// var - function scoped, can be redeclared
+var x = 10;
+var x = 20; // No error
+
+function testVar() {
+    var y = 5;
+    if (true) {
+        var y = 10; // Same variable, gets reassigned
+        console.log(y); // 10
+    }
+    console.log(y); // 10 (not block scoped)
+}
+
+// let - block scoped, cannot be redeclared
+let a = 10;
+// let a = 20; // Error: Identifier 'a' has already been declared
+
+if (true) {
+    let b = 5;
+    console.log(b); // 5
+}
+// console.log(b); // Error: b is not defined
+
+// const - block scoped, cannot be reassigned
+const PI = 3.14159;
+// PI = 3.14; // Error: Assignment to constant variable
+
+const user = { name: 'John' };
+user.name = 'Jane'; // This is allowed (modifying object properties)
+// user = { name: 'Alice' }; // Error: Assignment to constant variable`,
+                    difficulty: "easy",
+                    topics: ["Variables", "ES6", "Scope"],
+                    popularity: 9.8
+            },
+            {
+                id: 2,
+                question: "Explain event bubbling and event capturing in JavaScript.",
+                answer: "Event bubbling and capturing are two ways of event propagation in the DOM:<br><br><strong>Event Capturing (Trickling Down)</strong>: The event starts from the outermost parent and propagates inward to the target element.<br><br><strong>Event Bubbling (Bubbling Up)</strong>: The event starts from the target element and propagates outward to the outermost parent.<br><br>By default, events use bubbling propagation. You can use <code>addEventListener</code> with the third parameter to control this behavior.",
+                code: `// HTML structure for this example:
+// <div id="grandparent">
+//   <div id="parent">
+//     <div id="child">Click me</div>
+//   </div>
+// </div>
+
+const grandparent = document.getElementById('grandparent');
+const parent = document.getElementById('parent');
+const child = document.getElementById('child');
+
+// Event Capturing (true as third parameter)
+grandparent.addEventListener('click', () => {
+    console.log('Grandparent captured');
+}, true);
+
+parent.addEventListener('click', () => {
+    console.log('Parent captured');
+}, true);
+
+// Event Bubbling (default behavior)
+grandparent.addEventListener('click', () => {
+    console.log('Grandparent bubbled');
+});
+
+parent.addEventListener('click', () => {
+    console.log('Parent bubbled');
+});
+
+child.addEventListener('click', () => {
+    console.log('Child clicked');
+});
+
+// When child is clicked, output will be:
+// Grandparent captured
+// Parent captured
+// Child clicked
+// Parent bubbled
+// Grandparent bubbled
+
+// To stop propagation:
+child.addEventListener('click', (event) => {
+    console.log('Child clicked');
+    event.stopPropagation(); // Stops further propagation
+});`,
+                    difficulty: "medium",
+                    topics: ["DOM", "Events", "Browser"],
+                    popularity: 8.5
+            },
+            {
+                id: 3,
+                question: "What is hoisting in JavaScript?",
+                answer: "Hoisting is JavaScript's behavior of moving declarations to the top of their containing scope during the compilation phase. However, only the declarations are hoisted, not the initializations.<br><br>• <strong>Function declarations</strong> are fully hoisted (can be called before declaration)<br>• <strong>var variables</strong> are hoisted but initialized as 'undefined'<br>• <strong>let and const</strong> are hoisted but not initialized (Temporal Dead Zone)<br>• <strong>Function expressions</strong> follow variable hoisting rules",
+                code: `// Function declarations are fully hoisted
+sayHello(); // Works: "Hello!"
+function sayHello() {
+    console.log("Hello!");
+}
+
+// var variables are hoisted but initialized as undefined
+console.log(x); // undefined (not an error)
+var x = 5;
+console.log(x); // 5
+
+// Equivalent to:
+// var x;
+// console.log(x);
+// x = 5;
+
+// let/const are hoisted but not initialized (Temporal Dead Zone)
+// console.log(y); // Error: Cannot access 'y' before initialization
+let y = 10;
+
+// Function expressions follow variable hoisting rules
+// greet(); // Error: greet is not a function (if var) or Cannot access (if let/const)
+
+var greet = function() {
+    console.log("Good morning!");
+};
+
+// Class declarations are not hoisted
+// const p = new Person(); // Error: Person is not defined
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+}`,
+                    difficulty: "easy",
+                    topics: ["Hoisting", "Variables", "Functions"],
+                    popularity: 9.2
+            }
+        ],
+        mid: [
+            {
+                id: 4,
+                question: "Explain the Prototype Chain in JavaScript.",
+                answer: "JavaScript uses prototypal inheritance where objects can inherit properties and methods from other objects. Every JavaScript object has a prototype property, which makes inheritance possible.<br><br><strong>Key Points:</strong><br>1. Every function has a prototype property (empty object by default)<br>2. When you create an object using a constructor function, the object's __proto__ points to the constructor's prototype<br>3. When accessing a property, JavaScript looks up the prototype chain<br>4. Object.create() creates a new object with the specified prototype",
+                code: `// Constructor function
+function Animal(name) {
+    this.name = name;
+}
+
+// Adding method to prototype
+Animal.prototype.speak = function() {
+    console.log(\`\${this.name} makes a sound\`);
+};
+
+// Creating instances
+const dog = new Animal('Dog');
+dog.speak(); // "Dog makes a sound"
+
+// Checking prototype chain
+console.log(dog.__proto__ === Animal.prototype); // true
+console.log(Animal.prototype.__proto__ === Object.prototype); // true
+console.log(Object.prototype.__proto__); // null
+
+// Prototype chain: dog -> Animal.prototype -> Object.prototype -> null
+
+// Inheritance using prototypes
+function Dog(name, breed) {
+    Animal.call(this, name);
+    this.breed = breed;
+}
+
+// Set up prototype chain
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;
+
+Dog.prototype.bark = function() {
+    console.log(\`\${this.name} the \${this.breed} barks!\`);
+};
+
+const myDog = new Dog('Buddy', 'Golden Retriever');
+myDog.speak(); // "Buddy makes a sound" (inherited)
+myDog.bark();  // "Buddy the Golden Retriever barks!"
+
+// Using Object.getPrototypeOf
+console.log(Object.getPrototypeOf(myDog) === Dog.prototype); // true
+console.log(Object.getPrototypeOf(Dog.prototype) === Animal.prototype); // true`,
+                    difficulty: "medium",
+                    topics: ["OOP", "Prototypes", "Inheritance"],
+                    popularity: 8.8
+            },
+            {
+                id: 5,
+                question: "What is the Event Loop in JavaScript and how does it work?",
+                answer: "The Event Loop is JavaScript's concurrency model that allows non-blocking I/O operations despite JavaScript being single-threaded.<br><br><strong>How it works:</strong><br>1. JavaScript has a Call Stack for synchronous code execution<br>2. Web APIs handle asynchronous operations (setTimeout, fetch, etc.)<br>3. Callback Queue holds callbacks from completed async operations<br>4. Event Loop constantly checks if Call Stack is empty<br>5. When Call Stack is empty, Event Loop pushes callbacks from Callback Queue to Call Stack<br><br>Microtasks (Promises, queueMicrotask) have higher priority than Macrotasks (setTimeout, setInterval).",
+                code: `console.log('1: Start');
+
+setTimeout(() => {
+    console.log('2: Timeout callback');
+}, 0);
+
+Promise.resolve()
+    .then(() => {
+        console.log('3: Promise resolved');
+    });
+
+console.log('4: End');
+
+// Output order:
+// 1: Start
+// 4: End
+// 3: Promise resolved  (Microtask - higher priority)
+// 2: Timeout callback   (Macrotask - lower priority)
+
+// Detailed example with nesting:
+console.log('Script start');
+
+setTimeout(function() {
+    console.log('setTimeout');
+}, 0);
+
+Promise.resolve()
+    .then(function() {
+        console.log('promise1');
+    })
+    .then(function() {
+        console.log('promise2');
+    });
+
+console.log('Script end');
+
+// Output:
+// Script start
+// Script end
+// promise1
+// promise2
+// setTimeout
+
+// Async/Await example:
+async function asyncFunc() {
+    console.log('asyncFunc start');
+    await Promise.resolve();
+    console.log('asyncFunc after await');
+}
+
+console.log('Before async');
+asyncFunc();
+console.log('After async');
+
+// Output:
+// Before async
+// asyncFunc start
+// After async
+// asyncFunc after await  (This is a microtask)`,
+                    difficulty: "hard",
+                    topics: ["Async", "Event Loop", "Promises"],
+                    popularity: 9.5
+            },
+            {
+                    id: 6,
+                    question: "Explain Currying in JavaScript with examples.",
+                    answer: "Currying is a functional programming technique where a function with multiple arguments is transformed into a sequence of functions, each taking a single argument.<br><br><strong>Benefits:</strong><br>1. Code reusability<br>2. Function composition<br>3. Partial application<br>4. Creating specialized functions from general ones",
+                    code: `// Basic currying example
+function add(a) {
+    return function(b) {
+        return a + b;
+    };
+}
+
+const add5 = add(5);
+console.log(add5(3)); // 8
+console.log(add5(10)); // 15
+
+// Multi-level currying
+function multiply(a) {
+    return function(b) {
+        return function(c) {
+            return a * b * c;
+        };
+    };
+}
+
+console.log(multiply(2)(3)(4)); // 24
+
+// Practical example: Creating specialized functions
+function createLogger(prefix) {
+    return function(message) {
+        console.log(\`[\${prefix}] \${message}\`);
+    };
+}
+
+const errorLogger = createLogger('ERROR');
+const infoLogger = createLogger('INFO');
+
+errorLogger('Something went wrong!'); // [ERROR] Something went wrong!
+infoLogger('Process completed');      // [INFO] Process completed
+
+// Currying with arrow functions (ES6)
+const curryAdd = a => b => c => a + b + c;
+console.log(curryAdd(1)(2)(3)); // 6
+
+// Generic curry function
+function curry(fn) {
+    return function curried(...args) {
+        if (args.length >= fn.length) {
+            return fn.apply(this, args);
+        } else {
+            return function(...args2) {
+                return curried.apply(this, args.concat(args2));
+            };
+        }
+    };
+}
+
+// Usage
+function sum(a, b, c) {
+    return a + b + c;
+}
+
+const curriedSum = curry(sum);
+console.log(curriedSum(1)(2)(3)); // 6
+console.log(curriedSum(1, 2)(3)); // 6
+console.log(curriedSum(1)(2, 3)); // 6`,
+                    difficulty: "medium",
+                    topics: ["Functional Programming", "Currying", "ES6"],
+                    popularity: 7.9
+            }
+            ],
+        senior: [
+            {
+                id: 7,
+                question: "Design a React-like Virtual DOM implementation. Explain the diffing algorithm.",
+                answer: "The Virtual DOM is a lightweight representation of the actual DOM. React's reconciliation algorithm uses a heuristic O(n) diffing algorithm based on two assumptions:<br><br>1. Elements of different types produce different trees<br>2. Key prop helps identify which items have changed<br><br><strong>Diffing Strategies:</strong><br>• Tree diff: Compare trees level by level<br>• Component diff: Same type components update, different types replace<br>• Element diff: Use keys to track moves, additions, removals<br><br>The algorithm performs a depth-first traversal and compares nodes.",
+                code: `// Simplified Virtual DOM implementation
+
+class VNode {
+    constructor(tag, props, children) {
+        this.tag = tag;
+        this.props = props || {};
+        this.children = children || [];
+        this.key = props ? props.key : null;
+    }
+}
+
+// Diff function
+function diff(oldNode, newNode) {
+    // 1. If nodes are different types, replace
+    if (oldNode.tag !== newNode.tag) {
+        return { type: 'REPLACE', newNode };
+    }
+    
+    // 2. If nodes are same type, diff props
+    const propsPatches = diffProps(oldNode.props, newNode.props);
+    
+    // 3. Diff children
+    const childrenPatches = diffChildren(oldNode.children, newNode.children);
+    
+    // 4. If has key, check if it's the same element
+    if (oldNode.key && newNode.key && oldNode.key !== newNode.key) {
+        return { type: 'REPLACE', newNode };
+    }
+    
+    return {
+        type: 'UPDATE',
+        props: propsPatches,
+        children: childrenPatches
+    };
+}
+
+function diffProps(oldProps, newProps) {
+    const patches = {};
+    const allProps = new Set([...Object.keys(oldProps), ...Object.keys(newProps)]);
+    
+    for (const key of allProps) {
+        if (newProps[key] !== oldProps[key]) {
+            if (!newProps[key]) {
+                patches[key] = null; // Remove prop
+            } else {
+                patches[key] = newProps[key]; // Update prop
+            }
+        }
+    }
+    
+    return patches;
+}
+
+function diffChildren(oldChildren, newChildren) {
+    const patches = [];
+    const len = Math.max(oldChildren.length, newChildren.length);
+    
+    for (let i = 0; i < len; i++) {
+        if (i >= oldChildren.length) {
+            // New child
+            patches.push({ type: 'ADD', node: newChildren[i] });
+        } else if (i >= newChildren.length) {
+            // Removed child
+            patches.push({ type: 'REMOVE', index: i });
+        } else {
+            // Diff existing child
+            patches.push(diff(oldChildren[i], newChildren[i]));
+        }
+    }
+    
+    return patches;
+}
+
+// Example usage
+const oldTree = new VNode('div', { id: 'app' }, [
+    new VNode('h1', null, ['Hello']),
+    new VNode('p', { className: 'text' }, ['World'])
+]);
+
+const newTree = new VNode('div', { id: 'app' }, [
+    new VNode('h1', null, ['Hello Updated']),
+    new VNode('p', { className: 'text active' }, ['World'])
+]);
+
+const patches = diff(oldTree, newTree);
+console.log(patches);`,
+                    difficulty: "hard",
+                    topics: ["React", "Virtual DOM", "Algorithms"],
+                    popularity: 9.0
+            },
+            {
+                id: 8,
+                question: "Design a rate limiter for an API service.",
+                answer: "A rate limiter restricts the number of requests a client can make to an API within a specific time window. Common algorithms:<br><br>1. <strong>Token Bucket</strong>: Tokens added at fixed rate, requests consume tokens<br>2. <strong>Leaky Bucket</strong: Requests added to queue, processed at fixed rate<br>3. <strong>Fixed Window Counter</strong>: Count requests in fixed time windows<br>4. <strong>Sliding Window Log</strong>: Track timestamps of recent requests<br>5. <strong>Sliding Window Counter</strong>: Hybrid of fixed window and sliding log<br><br>Considerations: Distributed systems, storage, burst handling, different limits per user/endpoint.",
+                code: `// Token Bucket Rate Limiter Implementation
+class TokenBucketRateLimiter {
+    constructor(capacity, refillRate) {
+        this.capacity = capacity; // Maximum tokens
+        this.tokens = capacity;   // Current tokens
+        this.refillRate = refillRate; // Tokens per second
+        this.lastRefill = Date.now();
+    }
+    
+    refillTokens() {
+        const now = Date.now();
+        const timePassed = (now - this.lastRefill) / 1000; // Convert to seconds
+        const tokensToAdd = timePassed * this.refillRate;
+        
+        this.tokens = Math.min(this.capacity, this.tokens + tokensToAdd);
+        this.lastRefill = now;
+    }
+    
+    allowRequest(tokens = 1) {
+        this.refillTokens();
+        
+        if (this.tokens >= tokens) {
+            this.tokens -= tokens;
+            return true;
+        }
+        
+        return false;
+    }
+}
+
+// Sliding Window Rate Limiter
+class SlidingWindowRateLimiter {
+    constructor(windowSize, maxRequests) {
+        this.windowSize = windowSize; // Window size in milliseconds
+        this.maxRequests = maxRequests; // Max requests per window
+        this.requests = new Map(); // user -> timestamps[]
+    }
+    
+    allowRequest(userId) {
+        const now = Date.now();
+        const windowStart = now - this.windowSize;
+        
+        if (!this.requests.has(userId)) {
+            this.requests.set(userId, []);
+        }
+        
+        const userRequests = this.requests.get(userId);
+        
+        // Remove old requests outside the window
+        while (userRequests.length > 0 && userRequests[0] < windowStart) {
+            userRequests.shift();
+        }
+        
+        // Check if under limit
+        if (userRequests.length < this.maxRequests) {
+            userRequests.push(now);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // For distributed systems, use Redis with sorted sets
+    async allowRequestRedis(userId, redisClient) {
+        const now = Date.now();
+        const key = \`rate_limit:\${userId}\`;
+        const windowStart = now - this.windowSize;
+        
+        // Remove old entries
+        await redisClient.zremrangebyscore(key, 0, windowStart);
+        
+        // Count current requests in window
+        const requestCount = await redisClient.zcard(key);
+        
+        if (requestCount < this.maxRequests) {
+            // Add current request
+            await redisClient.zadd(key, now, now);
+            // Set expiration
+            await redisClient.expire(key, this.windowSize / 1000);
+            return true;
+        }
+        
+        return false;
+    }
+}
+
+// Usage example
+const limiter = new TokenBucketRateLimiter(10, 1); // 10 tokens, refill 1 per second
+
+function handleRequest(req, res) {
+    if (limiter.allowRequest()) {
+        // Process request
+        res.status(200).send('Success');
+    } else {
+        res.status(429).send('Too Many Requests');
+    }
+}`,
+                    difficulty: "hard",
+                    topics: ["System Design", "API", "Scalability"],
+                    popularity: 8.7
+            },
+            {
+                id: 9,
+                question: "Implement a Promise from scratch with support for chaining.",
+                answer: "A Promise represents the eventual completion (or failure) of an asynchronous operation and its resulting value. Core features to implement:<br><br>1. Three states: PENDING, FULFILLED, REJECTED<br>2. then() method for chaining<br>3. Support for asynchronous resolution<br>4. Error propagation through chain<br>5. Static methods: resolve, reject, all, race",
+                code: `class MyPromise {
+    constructor(executor) {
+        this.state = 'PENDING';
+        this.value = undefined;
+        this.reason = undefined;
+        this.onFulfilledCallbacks = [];
+        this.onRejectedCallbacks = [];
+        
+        const resolve = (value) => {
+            if (this.state === 'PENDING') {
+                this.state = 'FULFILLED';
+                this.value = value;
+                this.onFulfilledCallbacks.forEach(fn => fn());
+            }
+        };
+        
+        const reject = (reason) => {
+            if (this.state === 'PENDING') {
+                this.state = 'REJECTED';
+                this.reason = reason;
+                this.onRejectedCallbacks.forEach(fn => fn());
+            }
+        };
+        
+        try {
+            executor(resolve, reject);
+        } catch (error) {
+            reject(error);
+        }
+    }
+    
+    then(onFulfilled, onRejected) {
+        // Handle non-function arguments
+        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
+        onRejected = typeof onRejected === 'function' ? onRejected : reason => { throw reason; };
+        
+        const promise2 = new MyPromise((resolve, reject) => {
+            const handleFulfilled = () => {
+                setTimeout(() => {
+                    try {
+                        const x = onFulfilled(this.value);
+                        this.resolvePromise(promise2, x, resolve, reject);
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 0);
+            };
+            
+            const handleRejected = () => {
+                setTimeout(() => {
+                    try {
+                        const x = onRejected(this.reason);
+                        this.resolvePromise(promise2, x, resolve, reject);
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 0);
+            };
+            
+            if (this.state === 'FULFILLED') {
+                handleFulfilled();
+            } else if (this.state === 'REJECTED') {
+                handleRejected();
+            } else if (this.state === 'PENDING') {
+                this.onFulfilledCallbacks.push(handleFulfilled);
+                this.onRejectedCallbacks.push(handleRejected);
+            }
+        });
+        
+        return promise2;
+    }
+    
+    catch(onRejected) {
+        return this.then(null, onRejected);
+    }
+    
+    finally(onFinally) {
+        return this.then(
+            value => MyPromise.resolve(onFinally()).then(() => value),
+            reason => MyPromise.resolve(onFinally()).then(() => { throw reason; })
+        );
+    }
+    
+    resolvePromise(promise, x, resolve, reject) {
+        // Promise Resolution Procedure
+        if (promise === x) {
+            return reject(new TypeError('Chaining cycle detected'));
+        }
+        
+        let called = false;
+        
+        if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
+            try {
+                const then = x.then;
+                
+                if (typeof then === 'function') {
+                    then.call(
+                        x,
+                        y => {
+                            if (called) return;
+                            called = true;
+                            this.resolvePromise(promise, y, resolve, reject);
+                        },
+                        r => {
+                            if (called) return;
+                            called = true;
+                            reject(r);
+                        }
+                    );
+                } else {
+                    resolve(x);
+                }
+            } catch (error) {
+                if (called) return;
+                called = true;
+                reject(error);
+            }
+        } else {
+            resolve(x);
+        }
+    }
+    
+    static resolve(value) {
+        if (value instanceof MyPromise) return value;
+        
+        return new MyPromise(resolve => {
+            resolve(value);
+        });
+    }
+    
+    static reject(reason) {
+        return new MyPromise((_, reject) => {
+            reject(reason);
+        });
+    }
+    
+    static all(promises) {
+        return new MyPromise((resolve, reject) => {
+            const results = [];
+            let completed = 0;
+            
+            promises.forEach((promise, index) => {
+                MyPromise.resolve(promise).then(
+                    value => {
+                        results[index] = value;
+                        completed++;
+                        
+                        if (completed === promises.length) {
+                            resolve(results);
+                        }
+                    },
+                    reject
+                );
+            });
+            
+            if (promises.length === 0) {
+                resolve(results);
+            }
+        });
+    }
+    
+    static race(promises) {
+        return new MyPromise((resolve, reject) => {
+            promises.forEach(promise => {
+                MyPromise.resolve(promise).then(resolve, reject);
+            });
+        });
+    }
+}
+
+// Usage example
+const p1 = new MyPromise((resolve) => {
+    setTimeout(() => resolve('First'), 1000);
+});
+
+p1
+    .then(value => {
+        console.log(value); // "First" after 1 second
+        return \`\${value} Second\`;
+    })
+    .then(value => {
+        console.log(value); // "First Second"
+        throw new Error('Something went wrong');
+    })
+    .catch(error => {
+        console.error('Caught:', error.message);
+        return 'Recovered';
+    })
+    .then(value => {
+        console.log(value); // "Recovered"
+    });`,
+                    difficulty: "hard",
+                    topics: ["Promises", "Async", "JavaScript Core"],
+                    popularity: 9.3
+            }
+        ]
+    };
+
+    // Generate Questions
+    function generateQuestions() {
+        // Clear existing questions
+        document.getElementById('fresher-questions').innerHTML = '';
+        document.getElementById('mid-questions').innerHTML = '';
+        document.getElementById('senior-questions').innerHTML = '';
+        
+        // Generate questions for each level
+        generateLevelQuestions('fresher');
+        generateLevelQuestions('mid');
+        generateLevelQuestions('senior');
+        
+        // Update stats
+        updateStats();
+        
+        // Generate filter tags
+        generateFilterTags();
+        
+        // Initialize accordions
+        initializeAccordions();
+        
+        // Initialize copy buttons
+        initializeCopyButtons();
+    }
+        
+    function generateLevelQuestions(level) {
+        const questions = interviewQuestions[level];
+        const container = document.getElementById(`${level}-questions`);
+        
+        questions.forEach((q, index) => {
+            const difficultyClass = q.difficulty === 'easy' ? 'difficulty-easy' : 
+                                  q.difficulty === 'medium' ? 'difficulty-medium' : 'difficulty-hard';
+            
+            const difficultyText = q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1);
+            
+            const questionElement = document.createElement('div');
+            questionElement.className = `accordion-item bg-white dark:bg-gray-800 animate-on-scroll delay-${(index % 4) * 100}`;
+            questionElement.dataset.id = q.id;
+            questionElement.dataset.level = level;
+            questionElement.dataset.topics = q.topics.join(',');
+            
+            questionElement.innerHTML = `
+                <div class="accordion-header bg-gray-50 dark:bg-gray-900">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-2">
+                            <span class="difficulty-dot ${difficultyClass}"></span>
+                            <span class="text-sm font-medium mr-3">${difficultyText}</span>
+                            ${q.topics.map(topic => 
+                                `<span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded mr-2">${topic}</span>`
+                            ).join('')}
+                        </div>
+                        <h3 class="text-lg font-bold pr-8">${q.question}</h3>
+                    </div>
+                    <div class="accordion-icon">
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="accordion-content bg-white dark:bg-gray-800">
+                    <div class="mb-6">
+                        <h4 class="text-lg font-bold mb-3 flex items-center">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                            Answer
+                        </h4>
+                        <div class="prose dark:prose-invert max-w-none">
+                            <p>${q.answer}</p>
+                        </div>
+                    </div>
+                    
+                    ${q.code ? `
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 flex items-center">
+                            <i class="fas fa-code text-purple-500 mr-2"></i>
+                            Code Example
+                        </h4>
+                        <div class="code-block bg-gray-900 text-gray-100">
+                            <div class="code-header border-gray-700">
+                                <span class="text-sm text-gray-400">JavaScript</span>
+                                <button class="copy-btn bg-gray-800 hover:bg-gray-700 text-gray-300" data-code="${q.id}">
+                                    <i class="far fa-copy mr-1"></i> Copy Code
+                                </button>
+                            </div>
+                            <pre class="overflow-x-auto mt-3"><code class="text-sm">${escapeHtml(q.code)}</code></pre>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            <i class="far fa-star mr-1"></i>
+                            Popularity: ${q.popularity}/10
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center">
+                                <i class="far fa-bookmark mr-1"></i> Save
+                            </button>
+                            <button class="text-sm text-green-600 dark:text-green-400 hover:underline flex items-center">
+                                <i class="far fa-thumbs-up mr-1"></i> Helpful
+                            </button>
+                            <button class="text-sm text-red-600 dark:text-red-400 hover:underline flex items-center">
+                                <i class="far fa-thumbs-down mr-1"></i> Not Helpful
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionElement);
+        });
+    }
+        
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function updateStats() {
+        const totalQuestions = Object.values(interviewQuestions).reduce((sum, arr) => sum + arr.length, 0);
+        document.getElementById('total-questions').textContent = totalQuestions;
+        document.getElementById('fresher-count').textContent = interviewQuestions.fresher.length;
+        document.getElementById('mid-count').textContent = interviewQuestions.mid.length;
+        document.getElementById('senior-count').textContent = interviewQuestions.senior.length;
+    }
+    
+    function generateFilterTags() {
+        const allTopics = new Set();
+        Object.values(interviewQuestions).forEach(questions => {
+            questions.forEach(q => {
+                q.topics.forEach(topic => allTopics.add(topic));
+            });
+        });
+        
+        const filterContainer = document.getElementById('filter-tags');
+        filterContainer.innerHTML = '';
+        
+        // Add "All" tag
+        const allTag = document.createElement('div');
+        allTag.className = 'filter-tag bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800 active';
+        allTag.textContent = 'All';
+        allTag.dataset.filter = 'all';
+        filterContainer.appendChild(allTag);
+        
+        // Add topic tags
+        Array.from(allTopics).forEach(topic => {
+            const tag = document.createElement('div');
+            tag.className = 'filter-tag bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-700';
+            tag.textContent = topic;
+            tag.dataset.filter = topic;
+            filterContainer.appendChild(tag);
+        });
+        
+        // Add filter event listeners
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Remove active class from all tags
+                document.querySelectorAll('.filter-tag').forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.remove('bg-blue-100', 'dark:bg-blue-900/30', 'text-blue-800', 'dark:text-blue-300');
+                    t.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-800', 'dark:text-gray-300');
+                });
+                
+                // Add active class to clicked tag
+                this.classList.add('active');
+                this.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-800', 'dark:text-gray-300');
+                this.classList.add('bg-blue-100', 'dark:bg-blue-900/30', 'text-blue-800', 'dark:text-blue-300');
+                
+                // Filter questions
+                const filter = this.dataset.filter;
+                filterQuestions(filter);
+            });
+        });
+    }
+    
+    function filterQuestions(filter) {
+        const allQuestions = document.querySelectorAll('.accordion-item');
+        
+        allQuestions.forEach(question => {
+            if (filter === 'all') {
+                question.style.display = 'block';
+            } else {
+                const topics = question.dataset.topics.split(',');
+                if (topics.includes(filter)) {
+                    question.style.display = 'block';
+                } else {
+                    question.style.display = 'none';
+                }
+            }
+        });
+    }
+    
+    function initializeAccordions() {
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('.accordion-icon i');
+                
+                // Close all other accordions in the same section
+                const parentSection = this.closest('section');
+                if (parentSection) {
+                    parentSection.querySelectorAll('.accordion-content').forEach(otherContent => {
+                        if (otherContent !== content && otherContent.classList.contains('open')) {
+                            otherContent.classList.remove('open');
+                            otherContent.previousElementSibling.querySelector('.accordion-icon i').classList.remove('open');
+                        }
+                    });
+                }
+                
+                // Toggle current accordion
+                content.classList.toggle('open');
+                icon.classList.toggle('open');
+            });
+        });
+    }
+    
+    function initializeCopyButtons() {
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const questionId = this.dataset.code;
+                let code = '';
+                
+                // Find the code in the questions data
+                Object.values(interviewQuestions).forEach(questions => {
+                    const question = questions.find(q => q.id == questionId);
+                    if (question && question.code) {
+                        code = question.code;
+                    }
+                });
+                
+                if (code) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.classList.remove('copied');
+                        }, 2000);
+                    });
+                }
+            });
+        });
+    }
+    
+    // Tab Switching
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.tab === 'fresher') {
+                    t.classList.remove('gradient-fresher');
+                } else if (t.dataset.tab === 'mid') {
+                    t.classList.remove('gradient-mid');
+                } else if (t.dataset.tab === 'senior') {
+                    t.classList.remove('gradient-senior');
+                }
+            });
+            
+            // Add active class to clicked tab
+            const tabType = this.dataset.tab;
+            if (tabType === 'fresher') {
+                this.classList.add('gradient-fresher', 'active');
+            } else if (tabType === 'mid') {
+                this.classList.add('gradient-mid', 'active');
+            } else if (tabType === 'senior') {
+                this.classList.add('gradient-senior', 'active');
+            }
+            
+            // Scroll to section
+            const targetSection = document.getElementById(tabType === 'mid' ? 'mid-senior' : tabType);
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Floating Action Button - Random Question
+    const fab = document.getElementById('fab');
+    fab.addEventListener('click', function() {
+        // Get all questions
+        const allQuestions = [];
+        Object.values(interviewQuestions).forEach(questions => {
+            questions.forEach(q => allQuestions.push(q));
+        });
+        
+        // Pick random question
+        const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+        
+        // Scroll to random question
+        const questionElement = document.querySelector(`.accordion-item[data-id="${randomQuestion.id}"]`);
+        if (questionElement) {
+            // Open the accordion
+            const header = questionElement.querySelector('.accordion-header');
+            const content = questionElement.querySelector('.accordion-content');
+            const icon = header.querySelector('.accordion-icon i');
+            
+            // Close all accordions first
+            document.querySelectorAll('.accordion-content').forEach(acc => {
+                acc.classList.remove('open');
+                acc.previousElementSibling.querySelector('.accordion-icon i').classList.remove('open');
+            });
+            
+            // Open random question
+            content.classList.add('open');
+            icon.classList.add('open');
+            
+            // Scroll to question
+            window.scrollTo({
+                top: questionElement.offsetTop - 120,
+                behavior: 'smooth'
+            });
+            
+            // Visual feedback on FAB
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 300);
+        }
+    });
+
+    // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            generateQuestions();
+            
+            // Initialize animations
+            window.addEventListener('load', animateOnScroll);
+            window.addEventListener('scroll', animateOnScroll);
+            
+            // Trigger initial animation
+            setTimeout(() => {
+                animateOnScroll();
+            }, 100);
+        });
+    
+</script>
